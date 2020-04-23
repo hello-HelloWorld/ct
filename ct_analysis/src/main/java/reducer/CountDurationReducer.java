@@ -1,0 +1,31 @@
+package reducer;
+
+/*
+ * @author: sunxiaoxiong
+ * @date  : Created in 2020/4/22 15:04
+ */
+
+import kv.key.ComDimension;
+import kv.value.CountDurationValue;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+public class CountDurationReducer extends Reducer<ComDimension, Text, ComDimension, CountDurationValue> {
+    CountDurationValue countDurationValue = new CountDurationValue();
+
+    @Override
+    protected void reduce(ComDimension key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        int callSum = 0;
+        int callDurationSum = 0;
+        for (Text text : values) {
+            callSum++;
+            callDurationSum = Integer.valueOf(text.toString());
+        }
+        countDurationValue.setCallSum(String.valueOf(callSum));
+        countDurationValue.setCallDurationSum(String.valueOf(callDurationSum));
+
+        context.write(key, countDurationValue);
+    }
+}
