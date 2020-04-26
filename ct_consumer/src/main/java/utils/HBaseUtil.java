@@ -13,11 +13,11 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -29,6 +29,7 @@ public class HBaseUtil {
     public static boolean isExistTable(Configuration conf, String tableName) throws IOException {
         Connection connection = ConnectionFactory.createConnection(conf);
         Admin admin = connection.getAdmin();
+        // HBaseAdmin admin1 = new HBaseAdmin(conf);
         boolean result = admin.tableExists(TableName.valueOf(tableName));
         admin.close();
         connection.close();
@@ -58,6 +59,7 @@ public class HBaseUtil {
             return;
         }
         HTableDescriptor htd = new HTableDescriptor(TableName.valueOf(tableName));
+        //添加列族
         for (String cf : cloumnFamily) {
             htd.addFamily(new HColumnDescriptor(cf));
         }
@@ -122,8 +124,8 @@ public class HBaseUtil {
         //生成分区号
         int regionCode = y % regions;
         //格式化分区号
-        SimpleDateFormat sdf = new SimpleDateFormat("00");
-        return sdf.format(regionCode);
+        DecimalFormat df = new DecimalFormat("00");
+        return df.format(regionCode);
     }
 
     //  regionCode_call1_buildTime_call2_flag_duration

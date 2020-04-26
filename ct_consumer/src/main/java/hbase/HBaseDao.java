@@ -58,7 +58,7 @@ public class HBaseDao {
      * ori数据样式： 18576581848,17269452013,2017-08-14 13:38:31,1761
      * rowkey样式：01_18576581848_20170814133831_17269452013_1_1761
      * HBase表的列：call1  call2   build_time   build_time_ts   flag   duration
-     *
+     *向表中添加数据
      * @param ori
      */
     public void put(String ori) {
@@ -68,6 +68,7 @@ public class HBaseDao {
                 //单例模式获取connection
                 connection = ConnectionInstance.getConnection(conf);
                 table = (HTable) connection.getTable(TableName.valueOf(tableName));
+                // table = new HTable(conf, tableName);过时api
                 table.setAutoFlushTo(false);
                 table.setWriteBufferSize(2 * 1024 * 1024);
             }
