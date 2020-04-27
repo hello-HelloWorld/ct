@@ -1,1 +1,4 @@
 .idea/
+ct_web/target/
+ct_consumer/target/classes/core-site.xml
+ct_consumer/target/classes/
